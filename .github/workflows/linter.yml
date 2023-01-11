@@ -1,9 +1,23 @@
-name: Linter
-on: [push, pull_request]
+name: Lint Code Base
+
+on:
+  push:
+      branches: [ "main" ]
+  pull_request:
+      branches: [ "main" ]
 
 jobs:
-    lint:
+    run-lint:
         runs-on: ubuntu-latest
         steps:
-        - uses: actions/checkout@v2
-        - uses: github/super-linter@v2
+        - name: Checkout code
+          uses: actions/checkout@v3
+          with:
+            fetch-depth: 0
+
+        - name: Lint Code Base
+          uses: github/super-linter@v4
+          env:
+            VALIDATE_ALL_CODEBASE: false
+            DEFAULT_BRANCH: "master"
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
